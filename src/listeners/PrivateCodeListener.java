@@ -47,6 +47,12 @@ public class PrivateCodeListener extends ListenerAdapter {
 
 			event.getChannel().sendMessage("Du wurdest verifiziert!").queue();
 			VerifySlash.getCodeList().remove(event.getAuthor().getId());
+			
+		} else if (!event.getMessage().getContentRaw().equals(VerifySlash.getCodeList().get(event.getAuthor().getId()))) {
+
+			event.getChannel().sendMessage("Verifizierung fehlgeschlagen!").queue();
+			VerifySlash.getCodeList().remove(event.getAuthor().getId());
+			
 		}
 
 	}
