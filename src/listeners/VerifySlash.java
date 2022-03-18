@@ -1,8 +1,8 @@
 package listeners;
 
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Properties;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
@@ -13,7 +13,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
 import config.Config;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -94,8 +93,8 @@ public class VerifySlash extends ListenerAdapter implements ISlash{
 
 			try {
 				
-			    Random r = new Random();
-			    String randomNumber = String.format("%04d", r.nextInt(1001));
+
+				String randomNumber = generateRandomString(10);
 			    
 			    if(codeList.containsKey(event.getUser().getId())) {
 			    	codeList.replace(event.getUser().getId(), randomNumber);
@@ -174,6 +173,29 @@ public class VerifySlash extends ListenerAdapter implements ISlash{
 				+ "> `Matrikelnummer: Gebe hier deine eigene Matrikelnummer ein.`"+ "\n";
 		
 		return verifyMessage;
+	}
+	
+	public static String generateRandomString(int length) {
+
+	    String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
+	    String CHAR_UPPER = CHAR_LOWER.toUpperCase();
+	    String NUMBER = "0123456789";
+
+	    String DATA_FOR_RANDOM_STRING = CHAR_LOWER + CHAR_UPPER + NUMBER;
+	    SecureRandom scr = new SecureRandom();
+
+	    if (length < 1) throw new IllegalArgumentException();
+
+	    StringBuilder sb = new StringBuilder(length);
+	    
+	    for (int i = 0; i < length; i++) {
+	        int rndCharAt = scr.nextInt(DATA_FOR_RANDOM_STRING.length());
+	        char rndChar = DATA_FOR_RANDOM_STRING.charAt(rndCharAt);
+
+	        sb.append(rndChar);
+	    }
+
+	    return sb.toString();
 	}
 
 }
